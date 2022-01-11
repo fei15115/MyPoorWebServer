@@ -498,7 +498,7 @@ void unimplemented(int client)
 int main(void)
 {
 	 int server_sock = -1;
-	 u_short port = 6379;//默认监听端口号 port 为6379
+	 u_short port = 80;//默认监听端口号 port 为6379
 	 int client_sock = -1;
 	 struct sockaddr_in client_name;
 	 socklen_t client_name_len = sizeof(client_name);

@@ -1,12 +1,29 @@
-<HTML>
-<TITLE>Test</TITLE>
+<!DOCTYPE html>
+<html>
 <head>
-<link rel="icon" href="data:;base64,=">
+<meta charset="utf-8">
+<title>CGI test</title>
 </head>
+<body>
+    <h1>This will be my first test of httpd</h1>
+    <p>And this will be a stating of learning network coding</p>
+    <script>
+        function jumptopost(){
+            window.location.href = 'post.html';
+            window.event.returnValue = false;
+        }
+    </script>
+    <button onclick="return jumptopost();">Jump to the post</button>
+    <br>
+    <br>
+    <br>
+    <from action="post.html" method="post">
+            <input type="button" value="here is the button on from">
+    </from>
+    <br>
+    <br>
+    <br>
+    <a href="post.html">link</a>
+</body>
+</html>
 
-<BODY>
-<P>Hello,My name is Song Hao, i am testing~ this is my little webserver.
-
-</FORM>
-</BODY>
-</HTML>
