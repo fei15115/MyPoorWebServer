@@ -17,7 +17,7 @@
 
 
 
-#define SERVER_STRING "Server: SongHao's http/0.1.0\r\n"//定义个人server名称
+#define SERVER_STRING "Server: Han's http/0.0.0B1T1\r\n"//定义个人server名称
 
 
 void *accept_request(void* client);
@@ -48,8 +48,8 @@ void *accept_request(void* from_client)
 	 int cgi = 0;     
 	 char *query_string = NULL;
 
-	 numchars = get_line(client, buf, sizeof(buf));
-	
+	numchars = get_line(client, buf, sizeof(buf));
+	printf("buf is %s\r\n",buf);
 
 	i = 0; 
 	j = 0;
@@ -102,7 +102,7 @@ void *accept_request(void* from_client)
 
 		 }
 
-	 sprintf(path, "httpdocs%s", url);
+	 sprintf(path, "/home/bh/MyPoorWebServer/httpdocs%s", url);
 
 
 	 if (path[strlen(path) - 1] == '/')
@@ -334,34 +334,18 @@ void execute_cgi(int client, const char *path,
 //解析一行http报文
 int get_line(int sock, char *buf, int size)
 {
-	 int i = 0;
-	 char c = '\0';
-	 int n;
-
-	 while ((i < size - 1) && (c != '\n'))
-	 {
-		  n = recv(sock, &c, 1, 0);
-
-		  if (n > 0) 
-		  {
-			   if (c == '\r')
-			   {
-
-				n = recv(sock, &c, 1, MSG_PEEK);
-				if ((n > 0) && (c == '\n'))
-				recv(sock, &c, 1, 0);
-				else
-				 c = '\n';
-			   }
-			   buf[i] = c;
-			   i++;
-			   
-		  }
-		  else
-		   c = '\n';
-	 }
-	 buf[i] = '\0';
-	return(i);
+	int i = 0;
+	char c = '\0';
+	int n;
+	char recv_buf[1024];
+	recv(sock, &recv_buf, 1024, 0);
+	printf("get buffer is--------------\r\n %s\r\n--------------\r\n",recv_buf);
+	
+	while(recv_buf[i] != '\n')
+	{
+		
+	}
+	return(0);
 }
 
 
