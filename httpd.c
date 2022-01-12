@@ -112,10 +112,12 @@ void *accept_request(void* from_client)
 	 }
  
 	if (stat(path, &st) == -1) {
-		  while ((numchars > 0) && strcmp("\n", buf))  
-		   numchars = get_line(client, buf, sizeof(buf));
-
-		  not_found(client);
+		while ((numchars > 0) && strcmp("\n", buf))
+		{
+			numchars = get_line(client, buf, sizeof(buf));
+			usleep(10000);
+		}
+		not_found(client);
 	}
 	else
 	{
@@ -225,18 +227,21 @@ void execute_cgi(int client, const char *path,
 	 //默认字符
 	 buf[0] = 'A'; 
 	 buf[1] = '\0';
-	 if (strcasecmp(method, "GET") == 0)
-
+	if (strcasecmp(method, "GET") == 0)
+	{
 		 while ((numchars > 0) && strcmp("\n", buf))
 		 {
+			 printf("%s1",__func__);
 			 numchars = get_line(client, buf, sizeof(buf));
 		 }
-	 else    
-	 {
-
+	}
+	else    
+	{
+		 printf("%s4\n",__func__);
 		  numchars = get_line(client, buf, sizeof(buf));
 		  while ((numchars > 0) && strcmp("\n", buf))
 		  {
+			  printf("%s3\n",__func__);
 				buf[15] = '\0';
 			   if (strcasecmp(buf, "Content-Length:") == 0)
 					content_length = atoi(&(buf[16]));
@@ -338,14 +343,22 @@ int get_line(int sock, char *buf, int size)
 	char c = '\0';
 	int n;
 	char recv_buf[1024];
-	recv(sock, &recv_buf, 1024, 0);
-	printf("get buffer is--------------\r\n %s\r\n--------------\r\n",recv_buf);
 	
-	while(recv_buf[i] != '\n')
+	n = recv(sock, &recv_buf, 1024, 0);
+	if(n == 0)
+		return 0;
+	printf("--------------\r\nget buffer is\r\n%s\r\n--------------\r\n",recv_buf);
+	
+	n=0;
+	while(recv_buf[i] != '\n' && i < size)
 	{
-		
+		buf[n] = recv_buf[i];
+		n++;
+		i++;
 	}
-	return(0);
+	buf[n] = '\n';n++;
+	buf[n] = '\0';
+	return(n);
 }
 
 
@@ -401,10 +414,11 @@ void serve_file(int client, const char *filename)
 	 char buf[1024];
 	 buf[0] = 'A'; 
 	 buf[1] = '\0';
-	 while ((numchars > 0) && strcmp("\n", buf)) 
-	 {
-		 numchars = get_line(client, buf, sizeof(buf));
-	 }
+	//  while ((numchars > 0) && strcmp("\n", buf)) 
+	//  {
+	// 	numchars = get_line(client, buf, sizeof(buf));
+	// 	printf("%s:%s",__func__,buf);
+	//  }
 	
 	 //打开文件
 	 resource = fopen(filename, "r");
